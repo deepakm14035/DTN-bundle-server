@@ -1,0 +1,17 @@
+mysql installation-
+
+download mysql zip
+run "mysqld --initialize --console"
+run "mysqld --console"
+
+root@localhost: password
+
+to connect to DB -
+run "mysql -u root -p"
+
+
+CREATE DATABASE dtn_server_db
+
+use dtn_server_db
+
+create table app_data_table (app_name varchar(100) not null, adu_id int unsigned not null, direction varchar(6) );
