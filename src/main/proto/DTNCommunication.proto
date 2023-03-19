@@ -5,17 +5,11 @@ option java_package = "edu.sjsu.dtn.server.communicationservice";
 
 service DTNCommunication {
   rpc registerAdapter (ConnectionData) returns (ResponseStatus) {}
-  rpc saveData (AppData) returns (ResponseStatus) {}
 }
 
 message ConnectionData {
   string appName = 1;
   string url = 2;
-}
-
-message AppData {
-  string appName = 1;
-  bytes data = 2;
 }
 
 message ResponseStatus {
