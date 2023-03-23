@@ -126,10 +126,10 @@ public class FileStoreHelper {
 
     public List<byte[]> getAppData(String appId, String clientId){
         List<byte[]> appDataList = new ArrayList<>();
-        String folder = RootFolder+"/"+clientId+"/"+appId;
+        String folder = clientId+"/"+appId;
         Metadata metadata = getMetadata(folder);
         for(long i=metadata.lastProcessedMessageId+1;i <= metadata.lastReceivedMessageId;i++){
-            appDataList.add(readFile(folder+"/"+i+".txt"));
+            appDataList.add(readFile(RootFolder+"/"+folder+"/"+i+".txt"));
         }
         //metadata.lastProcessedMessageId= metadata.lastReceivedMessageId;
         //setMetadata(folder, metadata);
@@ -168,7 +168,7 @@ public class FileStoreHelper {
         String folder = clientId+"/"+appId;
         File f = new File(RootFolder+"/"+folder);
         if(f.isDirectory()){
-            System.out.println( RootFolder+"/"+appId+" is a directory");
+            System.out.println( RootFolder+"/"+folder+" is a directory");
             int noOfMessages = f.list().length;
             System.out.println("noOfMessages-"+noOfMessages);
             File dataFile = new File(RootFolder+"/"+folder+"/"+noOfMessages+".txt");

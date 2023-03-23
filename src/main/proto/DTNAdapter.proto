@@ -4,31 +4,25 @@ option java_multiple_files = true;
 option java_package = "edu.sjsu.dtn.adapter.communicationservice";
 
 service DTNAdapter {
-  rpc saveData (AppData) returns (Status) {}
-  rpc getData (ClientData) returns (AppData){}
+  rpc saveData (AppData) returns (AppData) {}
+  rpc prepareData (ClientData) returns (Status) {}
 }
 
 message AppData {
-  string appName = 1;
-  string clientId = 2;
-  repeated bytes data = 3;
+  string clientId = 1;
+  repeated bytes data = 2;
 }
 
 message Status {
-  int32 code = 1;
-  string message = 2;
+  StatusCode code = 1;
 }
 
 enum StatusCode {
   SUCCESS = 0;
   FAIL = 1;
-  MORE_DATA_TO_SEND = 2;
+  CLIENT_NOT_REGISTERED = 2;
 }
 
 message ClientData{
   string clientId = 1;
-}
-
-message Empty{
-
 }

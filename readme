@@ -2,7 +2,7 @@ mysql installation-
 
 download mysql zip
 run "mysqld --initialize --console"
-run "mysqld --console"
+run "mysqld --console"  (in admin mode)
 
 root@localhost: password
 

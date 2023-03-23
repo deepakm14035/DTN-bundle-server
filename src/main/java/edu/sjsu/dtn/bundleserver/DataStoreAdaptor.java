@@ -1,5 +1,6 @@
 package edu.sjsu.dtn.bundleserver;
 
+import edu.sjsu.dtn.adapter.communicationservice.AppData;
 import edu.sjsu.model.ADU;
 import edu.sjsu.storage.FileStoreHelper;
 import edu.sjsu.storage.MySQLConnection;
@@ -27,6 +28,7 @@ public class DataStoreAdaptor {
         System.out.println("[DSA] Deleted ADUs for application " + appId + " with id upto " + aduIdEnd);
     }
 
+    //get IP address and port for application adaptor server from database
     private String getAppAdapterAddress(String appId){
         try{
             MySQLConnection mysql = new MySQLConnection();
@@ -36,7 +38,7 @@ public class DataStoreAdaptor {
             ResultSet rs = stmt.executeQuery("select address from registered_app_adapter_table where app_id='"+appId+"';");
             String adapterAddress="";
             while(rs.next()) {
-                System.out.println("max value for app- "+rs.getInt(1) );
+                System.out.println("max value for app- "+rs.getString(1) );
                 adapterAddress = rs.getString(1);
             }
             con.close();
@@ -47,17 +49,23 @@ public class DataStoreAdaptor {
         return "";
     }
 
-    //send data to app adapter
-    public void persistADUForServer(String clientId, ADU adu) {
-        sendFileStoreHelper.AddFile(adu.getAppId(), clientId, sendFileStoreHelper.getDataFromFile(adu.getSource()));
-        String appAdapterAddress = getAppAdapterAddress(adu.getAppId());
-        DTNAdapterClient client = new DTNAdapterClient("localhost", 8080);
+    //store all data for one app received from transport and send to app adapter
+    public void persistADUsForServer(String clientId, String appId, List<ADU> adus) {
         List<byte[]> dataList=new ArrayList<>();
-        dataList.add(sendFileStoreHelper.getDataFromFile(adu.getSource()));
-        client.SendData(clientId, dataList);
+        for(int i=0;i<adus.size();i++) {
+            receiveFileStoreHelper.AddFile(adus.get(i).getAppId(), clientId, receiveFileStoreHelper.getDataFromFile(adus.get(i).getSource()));
+            dataList.add(receiveFileStoreHelper.getDataFromFile(adus.get(i).getSource()));
+        }
+        String appAdapterAddress = getAppAdapterAddress(appId);
+        System.out.println("[DataStoreAdaptor.persistADUForServer] "+appAdapterAddress);
+        String ipAddress = appAdapterAddress.split(":")[0];
+        int port = Integer.parseInt(appAdapterAddress.split(":")[1]);
+        DTNAdapterClient client = new DTNAdapterClient(ipAddress, port);
+        AppData data = client.SendData(clientId, dataList);
+        saveDataFromAdaptor(clientId, appId, data);
         System.out.println(
-                "[DSA] Stored ADU for application "
-                        + adu.getAppId()
+                "[DSA] Stored ADUs for application "
+                        + appId
                         + " for client "
                         + clientId);
     }
@@ -77,19 +85,10 @@ public class DataStoreAdaptor {
 
     //check if there is adapter
     //create GRPC connection to adapter and ask for data for the client
-    public void fetchADUsForApp(String clientId, String appId){
+    public void saveDataFromAdaptor(String clientId, String appId, AppData appData){
         try {
-            String adapterAddress=getAppAdapterAddress(appId);
-
-            if(adapterAddress.isEmpty()){
-                System.out.println("no adapter registered for application - "+appId);
-            }
-            String ipAddress = adapterAddress.split(":")[0];
-            int port = Integer.parseInt(adapterAddress.split(":")[0]);
-            DTNAdapterClient appAdapterClient = new DTNAdapterClient(ipAddress, port);
-            List<byte[]> dataList = appAdapterClient.RequestForADUs(clientId);
-            for(int i=0;i<dataList.size();i++){
-                sendFileStoreHelper.AddFile(appId, clientId, dataList.get(i));
+            for(int i=0;i<appData.getDataCount();i++){
+                receiveFileStoreHelper.AddFile(appId, clientId, appData.getData(i).toByteArray());
             }
         } catch (Exception ex){
             ex.printStackTrace();

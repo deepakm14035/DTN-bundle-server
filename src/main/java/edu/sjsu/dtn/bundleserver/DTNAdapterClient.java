@@ -29,7 +29,7 @@ public class DTNAdapterClient {
         asyncStub = DTNAdapterGrpc.newStub(channel);
     }
 
-    public void SendData(String clientId, List<byte[]> dataList){
+    public AppData SendData(String clientId, List<byte[]> dataList){
         DTNAdapterClient client = new DTNAdapterClient(ipAddress, port);
         try {
             List<ByteString> dataListConverted = new ArrayList<>();
@@ -40,34 +40,13 @@ public class DTNAdapterClient {
                     .setClientId(clientId)
                     .addAllData(dataListConverted)
                     .build();
-            Status status = client.blockingStub.saveData(data);
-            System.out.println("response: " + status.getMessage());
-
+            AppData appData = client.blockingStub.saveData(data);
+            System.out.println("[DTNAdapterClient.SendData] response: appData.getDataCount()- " + appData.getDataCount());
+            return appData;
         } catch (StatusRuntimeException e) {
             e.printStackTrace();
         }
-    }
 
-
-    //ask app adapter for data that has to be sent to this client
-    //given the metadata for the (clientId, appId) pair, assign new ADU ID to the new data and save them to file
-    //create the ADU object
-    //populate the list and return
-    public List<byte[]> RequestForADUs(String clientId){
-        DTNAdapterClient client = new DTNAdapterClient(ipAddress, port);
-        List<byte[]> aduList = new ArrayList<>();
-        try {
-            ClientData data = ClientData.newBuilder()
-                    .setClientId(clientId)
-                    .build();
-            AppData appData = client.blockingStub.getData(data);
-            for(int i=0;i<appData.getDataCount();i++) {
-                System.out.println("response: " + appData.getData(i));
-                aduList.add(appData.getData(i).toByteArray());
-            }
-        } catch (StatusRuntimeException e) {
-            e.printStackTrace();
-        }
-        return aduList;
+        return null;
     }
 }
