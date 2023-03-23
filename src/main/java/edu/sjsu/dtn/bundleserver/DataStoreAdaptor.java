@@ -27,9 +27,30 @@ public class DataStoreAdaptor {
         System.out.println("[DSA] Deleted ADUs for application " + appId + " with id upto " + aduIdEnd);
     }
 
+    private String getAppAdapterAddress(String appId){
+        try{
+            MySQLConnection mysql = new MySQLConnection();
+            Connection con = mysql.GetConnection();
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery("select address from registered_app_adapter_table where app_id='"+appId+"';");
+            String adapterAddress="";
+            while(rs.next()) {
+                System.out.println("max value for app- "+rs.getInt(1) );
+                adapterAddress = rs.getString(1);
+            }
+            con.close();
+            return  adapterAddress;
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return "";
+    }
+
     //send data to app adapter
     public void persistADUForServer(String clientId, ADU adu) {
         sendFileStoreHelper.AddFile(adu.getAppId(), clientId, sendFileStoreHelper.getDataFromFile(adu.getSource()));
+        String appAdapterAddress = getAppAdapterAddress(adu.getAppId());
         DTNAdapterClient client = new DTNAdapterClient("localhost", 8080);
         List<byte[]> dataList=new ArrayList<>();
         dataList.add(sendFileStoreHelper.getDataFromFile(adu.getSource()));
@@ -58,16 +79,7 @@ public class DataStoreAdaptor {
     //create GRPC connection to adapter and ask for data for the client
     public void fetchADUsForApp(String clientId, String appId){
         try {
-            MySQLConnection mysql = new MySQLConnection();
-            Connection con = mysql.GetConnection();
-            Statement stmt = con.createStatement();
-
-            ResultSet rs = stmt.executeQuery("select address from registered_app_adapter_table where app_name='"+appId+"';");
-            String adapterAddress="";
-            while(rs.next()) {
-                System.out.println("max value for app- "+rs.getInt(1) );
-                adapterAddress = rs.getString(1);
-            }
+            String adapterAddress=getAppAdapterAddress(appId);
 
             if(adapterAddress.isEmpty()){
                 System.out.println("no adapter registered for application - "+appId);
@@ -79,7 +91,6 @@ public class DataStoreAdaptor {
             for(int i=0;i<dataList.size();i++){
                 sendFileStoreHelper.AddFile(appId, clientId, dataList.get(i));
             }
-            con.close();
         } catch (Exception ex){
             ex.printStackTrace();
         }

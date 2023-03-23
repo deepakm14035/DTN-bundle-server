@@ -5,21 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffcfe5c7-26ae-4ea1-985c-55aa8be9aa83" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DTNAdapterClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DTNBundleServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/model/ADU.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/model/Metadata.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/storage/FileStoreHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/storage/MySQLConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileStore/Send/com.example.contentprovidertest/metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/FileStore/Send/com.example.contentprovidertest/metadata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme" beforeDir="false" afterPath="$PROJECT_DIR$/readme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DTNCommunicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DTNCommunicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/proto/DTNAdapter.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/DTNAdapter.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/proto/DTNCommunication.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/DTNCommunication.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mysql-connector.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/dtn/bundleserver/DataStoreAdaptorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/storage/FileStoreHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/storage/FileStoreHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +60,7 @@
       <recent name="C:\Users\dmuna\Documents\java\DTN-bundle-server\src\main" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.DTNBundleServer">
+  <component name="RunManager" selected="Application.DataStoreAdaptorTest">
     <configuration name="DTNBundleServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.sjsu.dtn.bundleserver.DTNBundleServer" />
       <module name="DTN-bundle-server" />
@@ -111,8 +102,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DTNBundleServer" />
         <item itemvalue="Application.DataStoreAdaptorTest" />
+        <item itemvalue="Application.DTNBundleServer" />
         <item itemvalue="Application.DTNCommunicationService" />
       </list>
     </recent_temporary>

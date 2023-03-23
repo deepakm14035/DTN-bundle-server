@@ -21,7 +21,7 @@ create table app_data_table (
     direction varchar(6)
 );
 create table registered_app_adapter_table (
-    app_name varchar(100) not null,
+    app_id varchar(100) not null,
     address varchar(200) not null
 );
 

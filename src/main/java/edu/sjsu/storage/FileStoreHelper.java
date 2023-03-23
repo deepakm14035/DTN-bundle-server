@@ -16,34 +16,35 @@ import java.util.List;
 /*
 * File structure:
 * ----Send
-* --------AppID A
-* ------------ClientID 1
+* ---------ClientID 1
+* ------------AppID A
 * ----------------A.1.txt
 * ----------------metadata.json
-* ------------ClientID 2
+* ------------App ID B
 * ----------------A.1.txt
 * ----------------metadata.json
-* --------AppID B
-* ------------ClientID 1
+* --------ClientID 1
+* ------------AppID B
 * ----------------B.1.txt
 * ----------------metadata.json
-* ------------ClientID 2
+* ------------AppID D
 * ----------------B.1.txt
 * ----------------metadata.json
 * ----Receive
-* ------------ClientID 1
-* ----------------A.1.txt
-* ----------------metadata.json
-* ------------ClientID 2
-* ----------------A.1.txt
-* ----------------metadata.json
-* --------AppID B
-* ------------ClientID 1
-* ----------------B.1.txt
-* ----------------metadata.json
-* ------------ClientID 2
-* ----------------B.1.txt
-* ----------------metadata.json
+ * ---------ClientID 1
+ * ------------AppID A
+ * ----------------A.1.txt
+ * ----------------metadata.json
+ * ------------App ID B
+ * ----------------A.1.txt
+ * ----------------metadata.json
+ * --------ClientID 1
+ * ------------AppID B
+ * ----------------B.1.txt
+ * ----------------metadata.json
+ * ------------AppID D
+ * ----------------B.1.txt
+ * ----------------metadata.json
 * */
 
 public class FileStoreHelper {
@@ -125,7 +126,7 @@ public class FileStoreHelper {
 
     public List<byte[]> getAppData(String appId, String clientId){
         List<byte[]> appDataList = new ArrayList<>();
-        String folder = RootFolder+"/"+appId+"/"+clientId;
+        String folder = RootFolder+"/"+clientId+"/"+appId;
         Metadata metadata = getMetadata(folder);
         for(long i=metadata.lastProcessedMessageId+1;i <= metadata.lastReceivedMessageId;i++){
             appDataList.add(readFile(folder+"/"+i+".txt"));
@@ -136,11 +137,11 @@ public class FileStoreHelper {
     }
 
     public byte[] getADU(String clientId, String appId, String aduId){
-        return readFile(RootFolder+"/"+ appId+"/"+clientId+"/"+aduId+".txt");
+        return readFile(RootFolder+"/"+ clientId+"/"+appId+"/"+aduId+".txt");
     }
 
     public File getADUFile(String clientId, String appId, String aduId){
-        return new File(RootFolder+"/"+ appId+"/"+clientId+"/"+aduId+".txt");
+        return new File(RootFolder+"/"+ clientId+"/"+appId+"/"+aduId+".txt");
     }
 
     public byte[] getNextAppData(String folder){
@@ -164,7 +165,7 @@ public class FileStoreHelper {
     }
 
     public void AddFile(String appId, String clientId, byte data[]){
-        String folder = appId+"/"+clientId;
+        String folder = clientId+"/"+appId;
         File f = new File(RootFolder+"/"+folder);
         if(f.isDirectory()){
             System.out.println( RootFolder+"/"+appId+" is a directory");
@@ -212,7 +213,7 @@ public class FileStoreHelper {
 
     public void deleteAllFilesUpTo(String clientId, String appId, long aduId){
         //check if there are enough files
-        String folder = RootFolder+"/"+appId+"/"+clientId;
+        String folder = RootFolder+"/"+clientId+"/"+appId;
         Metadata metadata = getMetadata(folder);
         if(metadata.lastSentMessageId >= aduId){
             System.out.println("[FileStoreHelper.deleteAllFilesUpTo] Data already deleted.");
